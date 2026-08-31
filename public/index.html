@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizMate - Quiz Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>QuizMate</h1>
+        <p class="subtitle">Generate quizzes from your course notes</p>
+
+        <div id="upload-section">
+            <h2>Upload Your Notes</h2>
+            <input type="file" id="file-input" accept=".txt,.pdf,.docx">
+            <p>Or paste text directly:</p>
+            <textarea id="text-input" placeholder="Paste your notes here..." rows="4"></textarea>
+            <div id="difficulty-options">
+                <h3>Select Difficulty:</h3>
+                <button class="difficulty-btn" data-level="easy">Easy</button>
+                <button class="difficulty-btn" data-level="medium">Medium</button>
+                <button class="difficulty-btn" data-level="hard">Hard</button>
+            </div>
+            <button id="generate-btn" disabled>Generate Quiz</button>
+        </div>
+
+        <div id="quiz-section" class="hidden">
+            <h2>Quiz</h2>
+            <div id="quiz-container"></div>
+            <button id="prev-btn" class="nav-btn" disabled>Previous</button>
+            <button id="next-btn" class="nav-btn">Next</button>
+            <button id="submit-btn" class="hidden">Submit Quiz</button>
+        </div>
+
+        <div id="results-section" class="hidden">
+            <h2>Results</h2>
+            <div id="score-display"></div>
+            <div id="review-list"></div>
+            <button id="download-pdf-btn">Download PDF</button>
+            <button id="restart-btn">Create New Quiz</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
