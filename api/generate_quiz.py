@@ -43,7 +43,7 @@ def generate_quiz():
         return jsonify({'error': 'Gemini API key not configured'}), 500
 
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('gemini-2.5-flash')
 
     prompt = f"""
 You are an expert quiz generator. Based on the following text, generate {question_count} multiple-choice questions at {difficulty} difficulty level.
