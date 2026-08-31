@@ -1,125 +1,164 @@
-# QuizMate - Quiz Generator
+<div align="center">
 
-QuizMate is a full-stack web application that helps students generate interactive quizzes from their course notes. Users can upload documents (text, PDF, or Word), select a difficulty level, and the app uses AI to generate multiple-choice questions. The quiz can be taken interactively in the browser, and users can download a PDF version with questions and answer key.
+# 📚 QuizMate
 
-## Features
+### Turn any document into a quiz. Instantly.
 
-- **File Upload**: Accept .txt, .pdf, and .docx files (also allows pasting raw text directly)
-- **AI-Powered Question Generation**: Uses Google Gemini API to generate quiz questions
-- **Difficulty Selection**: Choose between Easy, Medium, and Hard difficulty levels
-- **Automatic Question Count**: Determines optimal number of questions based on document length
-- **Interactive Quiz UI**: Take the quiz in the browser with immediate feedback
-- **Review Screen**: See your score, review each question with explanations
-- **Downloadable PDF**: Generate a PDF containing questions and answer key
-- **Responsive Design**: Works on mobile and desktop devices
+<br>
 
-## Tech Stack
+## 🚀 [**▶ LAUNCH THE LIVE APP**](https://quiz-mate-beta.vercel.app/)
+### 🔗 https://quiz-mate-beta.vercel.app/
 
-- **Frontend**: HTML5, CSS3, Vanilla JavaScript (no frameworks)
-- **Backend**: Python serverless functions (Vercel)
-- **AI**: Google Gemini API (gemini-1.5-flash)
-- **Dependencies**: PyPDF2, python-docx, reportlab, google-generativeai
+*No install, no login — click the link above to test it right now.*
 
-## Setup Instructions
+<br>
+
+**Upload your notes → Pick a difficulty → Get a custom quiz → Study smarter.**
+
+[![Made with Python](https://img.shields.io/badge/Backend-Python-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Powered by Gemini](https://img.shields.io/badge/AI-Google_Gemini-8E75B2?style=flat-square&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
+
+[Features](#-features) · [How It Works](#-how-it-works) · [Setup](#-getting-started) · [Tech Stack](#-tech-stack)
+
+</div>
+
+---
+
+## 💡 Why QuizMate?
+
+Reading your notes over and over doesn't tell you what you actually *know*. Active recall does.
+
+QuizMate takes any set of course notes — a PDF, a Word doc, or just pasted text — and turns it into a real, gradeable multiple-choice quiz in seconds. No manual question writing, no flashcard apps to configure. Upload, generate, test yourself.
+
+Built as a self-directed project to explore full-stack development, AI integration, and serverless deployment — from a blank repo to a live, working product.
+
+---
+
+## ✨ Features
+
+| | |
+|---|---|
+| 📄 **Multi-format upload** | Supports `.txt`, `.pdf`, and `.docx` — or just paste raw text |
+| 🤖 **AI-generated questions** | Google Gemini analyzes your content and writes real multiple-choice questions |
+| 🎚️ **Adjustable difficulty** | Easy, Medium, or Hard — tune how challenging the quiz feels |
+| 🔢 **Smart question count** | Automatically scales the number of questions to your document's length |
+| ✅ **Interactive quiz mode** | Answer questions right in the browser with instant, explained feedback |
+| 📊 **Score + review screen** | See what you got right, what you missed, and why |
+| ⬇️ **Downloadable PDF** | Export the full quiz + answer key for offline studying |
+| 📱 **Responsive design** | Works cleanly on both desktop and mobile |
+
+---
+
+## 🖥️ How It Works
+
+```
+   📄 Upload Notes          🎯 Pick Difficulty         🤖 AI Generates          ✅ Take & Review
+  (.txt / .pdf / .docx)   →   (Easy/Med/Hard)      →      Quiz              →     Your Quiz
+```
+
+1. **Upload** — Your file is parsed server-side and converted to plain text
+2. **Generate** — The text + difficulty level is sent to Google's Gemini API, which returns structured quiz questions as JSON
+3. **Practice** — Answer each question in a clean, distraction-free interface
+4. **Review** — Get your score plus a full explanation for every answer
+5. **Export** — Download a polished PDF version to study offline
+
+---
+
+## 🛠️ Tech Stack
+
+<div align="center">
+
+| Layer | Technology |
+|---|---|
+| **Frontend** | HTML5, CSS3, Vanilla JavaScript *(no frameworks — built from scratch)* |
+| **Backend** | Python serverless functions |
+| **AI Engine** | Google Gemini API *(free tier)* |
+| **File Parsing** | PyPDF2, python-docx |
+| **PDF Export** | ReportLab |
+| **Hosting** | Vercel |
+
+</div>
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
-
-- Node.js and npm (for local development with Vercel)
 - Python 3.8+
-- A Google Gemini API key (free tier available at [Google AI Studio](https://aistudio.google.com/))
+- Node.js & npm *(for the Vercel CLI)*
+- A free [Google Gemini API key](https://aistudio.google.com/)
 
-### Local Development
+### Run it locally
 
-1. Clone the repository
-2. Install Python dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Create a `.env` file in the root directory with your Gemini API key:
-   ```
-   GEMINI_API_KEY=your_api_key_here
-   ```
-4. Start the Vercel development server:
-   ```bash
-   vercel dev
-   ```
-5. Open your browser to `http://localhost:3000`
+```bash
+# 1. Clone the repo
+git clone https://github.com/SaadMon/QuizMate.git
+cd QuizMate
 
-### Deployment to Vercel
+# 2. Install dependencies
+pip install -r requirements.txt
 
-1. Push the code to a GitHub repository
-2. Import the project in Vercel ([vercel.com](https://vercel.com))
-3. Vercel will automatically detect the project structure and configure the build
-4. Add your Gemini API key as an environment variable in Vercel's project settings:
-   - Key: `GEMINI_API_KEY`
-   - Value: `your_actual_api_key_here`
-5. Deploy! Vercel will handle the rest.
+# 3. Add your API key
+cp .env.example .env
+# then open .env and paste your GEMINI_API_KEY
 
-## Project Structure
+# 4. Launch the local dev server
+vercel dev
+```
+
+Open **`http://localhost:3000`** and you're in.
+
+### Deploy your own copy
+
+1. Fork/push this repo to your own GitHub
+2. Import it into [Vercel](https://vercel.com/new)
+3. Add an environment variable: `GEMINI_API_KEY` → your key
+4. Hit **Deploy** — that's it
+
+---
+
+## 📁 Project Structure
 
 ```
 QuizMate/
-├── public/
+├── public/              # Frontend
 │   ├── index.html
 │   ├── style.css
 │   └── script.js
-├── api/
-│   ├── upload.py
-│   ├── generate_quiz.py
-│   └── generate_pdf.py
+├── api/                 # Backend (Python serverless functions)
+│   ├── upload.py         → parses .txt / .pdf / .docx
+│   ├── generate_quiz.py  → calls Gemini, returns quiz JSON
+│   └── generate_pdf.py   → builds downloadable PDF
 ├── requirements.txt
-├── README.md
-├── .env.example
-└── vercel.json
+├── vercel.json
+└── .env.example
 ```
 
-## Environment Variables
+---
 
-Create a `.env` file based on `.env.example`:
+## 🔮 Roadmap
 
-```
-GEMINI_API_KEY=your_gemini_api_key_here
-```
+- [ ] User accounts + quiz history
+- [ ] Support for PowerPoint & Google Docs
+- [ ] True/false & fill-in-the-blank question types
+- [ ] Timed quiz mode
+- [ ] Shareable quiz links
+- [ ] Dark mode
 
-**Important**: Never commit your actual API key to version control. The `.env` file is listed in `.gitignore`.
+---
 
-## API Endpoints
+## 📄 License
 
-All API endpoints are under `/api` and are implemented as Vercel serverless functions:
+Released under the [MIT License](LICENSE) — free to use, modify, and build on.
 
-- `POST /api/upload` - Upload and extract text from files
-- `POST /api/generate-quiz` - Generate quiz questions from text
-- `POST /api/generate-pdf` - Generate PDF quiz with answer key
+---
 
-## How It Works
+<div align="center">
 
-1. **Text Extraction**: The upload endpoint handles .txt, .pdf, and .docx files, extracting plain text
-2. **Question Generation**: The generate-quiz endpoint sends the text and difficulty to Gemini AI, which returns structured JSON with questions, options, correct answers, and explanations
-3. **Quiz Interaction**: The frontend displays one question at a time, tracks user answers, and shows a results screen
-4. **PDF Generation**: The generate-pdf endpoint creates a professional PDF with questions and answer key using reportlab
+**Built by [Saad](https://github.com/SaadMon)**
 
-## Limitations (Free Tier)
+⭐ If you found this useful, consider giving it a star!
 
-- Google Gemini API has rate limits on the free tier
-- PDF generation uses reportlab which is free and open-source
-- No persistent storage - all data is lost when the session ends or page is refreshed
-- Maximum file size is limited by Vercel's serverless function constraints (typically 4.5MB)
-
-## Future Enhancements
-
-- User accounts to save quiz history
-- Support for more file formats (PowerPoint, Google Docs)
-- Different question types (true/false, fill-in-the-blank)
-- Timed quiz mode
-- Shareable quiz links
-- Dark mode toggle
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Acknowledgments
-
-- Google Gemini API for the AI question generation
-- Vercel for the serverless hosting platform
-- The open-source libraries used: PyPDF2, python-docx, reportlab
+</div>
