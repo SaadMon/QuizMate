@@ -18,7 +18,7 @@
 [![Made with Python](https://img.shields.io/badge/Backend-Python-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![Powered by Gemini](https://img.shields.io/badge/AI-Google_Gemini-8E75B2?style=flat-square&logo=googlegemini&logoColor=white)](https://ai.google.dev/)
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed-Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=flat-square)](LICENSE)
+
 
 [Features](#-features) · [How It Works](#-how-it-works) · [Setup](#-getting-started) · [Tech Stack](#-tech-stack)
 
@@ -149,11 +149,6 @@ QuizMate/
 
 ---
 
-## 📄 License
-
-Released under the [MIT License](LICENSE) — free to use, modify, and build on.
-
----
 
 <div align="center">
 
