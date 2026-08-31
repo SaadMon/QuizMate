@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Call backend to generate quiz
-            const response = await fetch('/api/generate-quiz', {
+            const response = await fetch('/api/generate_quiz', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Download PDF
     downloadPdfBtn.addEventListener('click', async () => {
         try {
-            const response = await fetch('/api/generate-pdf', {
+            const response = await fetch('/api/generate_pdf', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -242,24 +242,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Helper function to extract text from file
     async function extractTextFromFile(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                try {
-                    let text = event.target.result;
+    const formData = new FormData();
+    formData.append('file', file);
 
-                    // For now, we'll just return the text as-is for .txt files
-                    // In a real app, we would detect file type and parse accordingly
-                    // But since we're sending to backend, we'll let backend handle parsing
-                    resolve(text);
-                } catch (error) {
-                    reject(error);
-                }
-            };
-            reader.onerror = (error) => {
-                reject(error);
-            };
-            reader.readAsText(file);
-        });
+    const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to extract text from file');
     }
+
+    const data = await response.json();
+    return data.text;
+}
 });
