@@ -1,11 +1,13 @@
 import os
 import json
 import sys
-from flask import request, jsonify
+from flask import Flask, request, jsonify
 import google.generativeai as genai
 
-# Add the current directory to the path so we can import utils if needed
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Top-level Flask app — Vercel's Python runtime looks for this
+app = Flask(__name__)
 
 def get_question_count(word_count):
     """Determine number of questions based on document length"""
@@ -18,9 +20,9 @@ def get_question_count(word_count):
     else:
         return 20
 
-def main():
-    """Main function for Vercel serverless function"""
-    # Get JSON data
+@app.route('/api/generate_quiz', methods=['POST'])
+def generate_quiz():
+    """Generate a multiple-choice quiz from provided text using Gemini"""
     data = request.get_json()
     if not data:
         return jsonify({'error': 'No JSON data provided'}), 400
@@ -29,16 +31,13 @@ def main():
     difficulty = data.get('difficulty', 'medium')
     question_count = data.get('questionCount')
 
-    # Validate input
     if not text or not text.strip():
         return jsonify({'error': 'No text provided'}), 400
 
-    # Calculate question count if not provided
     if question_count is None:
         word_count = len(text.split())
         question_count = get_question_count(word_count)
 
-    # Configure Gemini API
     api_key = os.environ.get('GEMINI_API_KEY')
     if not api_key:
         return jsonify({'error': 'Gemini API key not configured'}), 500
@@ -46,7 +45,6 @@ def main():
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel('gemini-1.5-flash')
 
-    # Construct prompt
     prompt = f"""
 You are an expert quiz generator. Based on the following text, generate {question_count} multiple-choice questions at {difficulty} difficulty level.
 
@@ -78,33 +76,21 @@ Example format:
 """
 
     try:
-        # Generate content with Gemini
         response = model.generate_content(prompt)
-
-        # Extract JSON from response
         response_text = response.text.strip()
 
-        # Try to find JSON array in the response
-        # Look for content between [ and ]
         start_idx = response_text.find('[')
         end_idx = response_text.rfind(']')
 
         if start_idx == -1 or end_idx == -1:
-            # If no brackets found, try to parse the whole response as JSON
             quiz_data = json.loads(response_text)
         else:
             json_str = response_text[start_idx:end_idx+1]
             quiz_data = json.loads(json_str)
 
-        # Validate the structure
         if not isinstance(quiz_data, list):
             raise ValueError("Response is not a JSON array")
 
-        if len(quiz_data) != question_count:
-            # If we didn't get the expected number, we can still proceed with what we got
-            pass
-
-        # Validate each question
         for i, q in enumerate(quiz_data):
             if not all(key in q for key in ['question', 'options', 'correct_index', 'explanation']):
                 raise ValueError(f"Question {i} missing required fields")
@@ -115,14 +101,12 @@ Example format:
 
         return jsonify(quiz_data)
 
-    except json.JSONDecodeError as e:
-        # If JSON parsing fails, try again with a more explicit prompt
+    except json.JSONDecodeError:
         try:
             fallback_prompt = prompt + "\n\nIMPORTANT: Your response must be ONLY a valid JSON array. No other text."
             response = model.generate_content(fallback_prompt)
             response_text = response.text.strip()
 
-            # Try to extract JSON again
             start_idx = response_text.find('[')
             end_idx = response_text.rfind(']')
             if start_idx != -1 and end_idx != -1:
@@ -136,13 +120,6 @@ Example format:
     except Exception as e:
         return jsonify({'error': f'Failed to generate quiz: {str(e)}'}), 500
 
-# For local testing with Vercel dev
+# For local testing: `python api/generate_quiz.py`
 if __name__ == '__main__':
-    from flask import Flask
-    app = Flask(__name__)
-
-    @app.route('/api/generate-quiz', methods=['POST'])
-    def generate_quiz():
-        return main()
-
     app.run(debug=True)

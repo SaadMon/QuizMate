@@ -1,14 +1,15 @@
 import os
 import sys
-from flask import request, jsonify
+from flask import Flask, request, jsonify
 
-# Add the current directory to the path so we can import utils if needed
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# Top-level Flask app — Vercel's Python runtime looks for this
+app = Flask(__name__)
 
 def extract_text_from_txt(file_stream):
     """Extract text from a .txt file"""
     try:
-        # Read and decode the file
         content = file_stream.read()
         if isinstance(content, bytes):
             return content.decode('utf-8')
@@ -40,9 +41,9 @@ def extract_text_from_docx(file_stream):
     except Exception as e:
         raise Exception(f"Error reading DOCX file: {str(e)}")
 
-def main():
-    """Main function for Vercel serverless function"""
-    # Handle file upload
+@app.route('/api/upload', methods=['POST'])
+def upload():
+    """Handle file upload and extract text from txt/pdf/docx"""
     if 'file' not in request.files:
         return jsonify({'error': 'No file provided'}), 400
 
@@ -50,7 +51,6 @@ def main():
     if file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
 
-    # Get file extension
     filename = file.filename.lower()
     if filename.endswith('.txt'):
         text = extract_text_from_txt(file.stream)
@@ -61,19 +61,11 @@ def main():
     else:
         return jsonify({'error': 'Unsupported file format. Please upload .txt, .pdf, or .docx'}), 400
 
-    # Check if text is empty
     if not text or text.strip() == '':
         return jsonify({'error': 'The uploaded file appears to be empty'}), 400
 
     return jsonify({'text': text})
 
-# For local testing with Vercel dev
+# For local testing: `python api/upload.py`
 if __name__ == '__main__':
-    from flask import Flask
-    app = Flask(__name__)
-
-    @app.route('/api/upload', methods=['POST'])
-    def upload():
-        return main()
-
     app.run(debug=True)
